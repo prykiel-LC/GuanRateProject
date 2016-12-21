@@ -1,0 +1,10 @@
+Smith|Allen|M|Yellow|05-01-1974
+Jones|Joe|M|Red|01-15-1999
+Franklin|Phillip|M|Blue|02-06-1982
+Johnson|Brandy|F|Purple|08-04-1989
+Richardson|Kim|F|Red|06-10-1995
+Simpson|James|M|Black|10-02-1950
+James|Eric|M|Green|12-14-1978
+Smith|Emily|F|Pink|02-18-1998
+Wilson|Ann|F|LightBlue|04-15-1978
+Hyde|Wilson|M|Orange|05-15-1981
