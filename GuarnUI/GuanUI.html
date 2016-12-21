@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Guanteed Rate</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div>
+        <h2>Post a New Record</h2>
+        <table border="1">
+            <tr>
+                <td>
+                    Last Name:
+                </td>
+                <td>
+                    <input id="LName" type="text" width="100" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    First Name:
+                </td>
+                <td>
+                    <input id="FName" type="text" width="100" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Gender:
+                </td>
+                <td>
+                    <select id="Gender" width="100">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+               <!--     <input id="Gender" type="text" width="100" /> -->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Favorite Color:
+                </td>
+                <td>
+                    <input id="FavColor" type="text" width="100" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Date of Birth:
+                </td>
+                <td>
+                    <input id="Dob" type="text" width="100" />
+                </td>
+            </tr>
+        </table>
+        <br /><br />
+        <button id="submit" type="submit" width="20">Submit</button>
+        <br /><br />
+    </div>
+    <div>
+        <h2>Person Data in JSON format</h2>
+        <a href="#" id="sortbyName">Sort data by Name</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#" id="sortbyGender">Sort data by Gender</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#" id="sortbyBirthDate">Sort data by BirthDate</a>
+        <br /><br />
+        <div style="border: 1px solid">
+        <ul id="persons" style="list-style: none;" />
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        var uri = "http://localhost:8080/api/persons";
+
+        // Default view of Persons data
+        getUsers();
+
+        // Person's data ordered by database entry
+        function getUsers() {
+            $(document).ready(function () {
+                $.getJSON(uri)
+                .done(function (data) {
+                    $("#persons").html("");
+                    $.each(data, function (key, item) {
+                        $("<li>", { html: "LastName :" + item.lastName + ", FirstName :" + item.firstName + ", Gender :" + item.gender +
+                        ", FavoriteColor :" + item.favoriteColor + ", DateOfBirth :" + item.dateOfBirth }).appendTo("#persons");
+                    });
+                });
+            });
+        }
+
+        // View : Person's data ordered by Last Name, and then First Name
+        $("#sortbyName").click(function () {
+            $(document).ready(function () {
+                $.getJSON(uri + "/Name")
+                .done(function (data) {
+                    $("#persons").html("");
+                    $.each(data, function (key, item) {
+                        $("<li>", {
+                            html: "LastName :" + item.lastName + ", FirstName :" + item.firstName + ", Gender :" + item.gender +
+                            ", FavoriteColor :" + item.favoriteColor + ", DateOfBirth :" + item.dateOfBirth
+                        }).appendTo("#persons");
+                    });
+                });
+            });
+
+        })
+
+        // View : Person's data ordered by Gender
+        $("#sortbyGender").click(function () {
+            $(document).ready(function () {
+                $.getJSON(uri + "/Gender")
+                .done(function (data) {
+                    $("#persons").html("");
+                    $.each(data, function (key, item) {
+                        $("<li>", {
+                            html: "LastName :" + item.lastName + ", FirstName :" + item.firstName + ", Gender :" + item.gender +
+                            ", FavoriteColor :" + item.favoriteColor + ", DateOfBirth :" + item.dateOfBirth
+                        }).appendTo("#persons");
+                    });
+                });
+            });
+
+        })
+
+        // View : Person's data ordered by Date of Birth
+        $("#sortbyBirthDate").click(function () {
+            $(document).ready(function () {
+                $.getJSON(uri + "/BirthDate")
+                .done(function (data) {
+                    $("#persons").html("");
+                    $.each(data, function (key, item) {
+                        $("<li>", {
+                            html: "LastName :" + item.lastName + ", FirstName :" + item.firstName + ", Gender :" + item.gender +
+                            ", FavoriteColor :" + item.favoriteColor + ", DateOfBirth :" + item.dateOfBirth
+                        }).appendTo("#persons");
+                    });
+                });
+            });
+
+        })
+
+        // Post a new Person record to database
+        $("#submit").click(function () {
+            var Person = {
+                LastName: $("#LName").val(),
+                FirstName: $("#FName").val(),
+                Gender: $("#Gender option:selected" ).val(),
+                FavoriteColor: $("#FavColor").val(),
+                DateOfBirth: $("#Dob").val()
+            }
+            $.ajax({
+                url: uri,
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(Person),
+                success: function (data, textStatus, xhr) {
+                    alert("Record Added");
+                    getUsers();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert("Error in Operation");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
